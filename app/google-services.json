@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "949581102473",
+    "firebase_url": "https://itransfo-3252d.firebaseio.com",
+    "project_id": "itransfo-3252d",
+    "storage_bucket": "itransfo-3252d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949581102473:android:df0ac65db186a515",
+        "android_client_info": {
+          "package_name": "com.medyas.itransfoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949581102473-7au3lpr67dtg196ekfq80ttofgac5koo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medyas.itransfoapp",
+            "certificate_hash": "fa21e49b45a691658f00b130a54c695e86bc27e6"
+          }
+        },
+        {
+          "client_id": "949581102473-mepsg379p8vc4sbesm4qompduolfq7nm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQWjdagk-Nlr8VwSCQsK9LZnn3xN8vq6M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949581102473-mepsg379p8vc4sbesm4qompduolfq7nm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

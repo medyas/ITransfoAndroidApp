@@ -1,0 +1,28 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+
+    <style name="ThemeItransfoApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#8eacbb</item>
+        <item name="colorPrimaryDark">#34515e</item>
+        <item name="colorAccent">#00bcd4</item>
+    </style>
+
+
+    <style name="BottomNavigation">
+        <item name="android:background">@color/colorWhite</item>
+        <item name="itemBackground">@color/itemBackgroundColor</item>
+        <item name="itemIconTint">@color/itemIconTintColor</item>
+        <item name="itemTextColor">@color/itemTextColor</item>
+    </style>
+
+    <style name="ThemeItransfoApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThemeItransfoApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyActionBarTheme" parent="ThemeItransfoApp">
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+</resources>
