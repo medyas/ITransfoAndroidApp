@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.recyclerview.R.attr.layoutManager
@@ -119,7 +120,7 @@ class DeviceFragment : Fragment() {
         }
 
         FuelManager.instance.apply {
-            basePath = "http://ec2-54-200-146-66.us-west-2.compute.amazonaws.com"
+            basePath = "https://itransfo.ml"
             baseHeaders = mapOf("Content-Type" to "application/json")
         }
 
@@ -149,7 +150,7 @@ class DeviceFragment : Fragment() {
     inner class someTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.tk/getUserDevices/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.ml/getUserDevicesInfo/".httpPost().body(p).responseString()
             return result
         }
 
@@ -163,9 +164,14 @@ class DeviceFragment : Fragment() {
             result.success { data ->
                 val json = JSONArray(data.toString())
                 for (i in 0 until (json.length())) {
-                    var obj:JSONObject = json.getJSONObject(i)
-                    var device  = DeviceList(obj.getString("device_name"), obj.getString("company_name"), obj.getString("device_ref"), obj.getString("device_uid"))
-                    ml.add(device)
+                    try {
+                        var obj:JSONObject = json.getJSONObject(i)
+                        var device  = DeviceList(obj.getString("device_name"), obj.getString("company_name"), obj.getString("device_ref"), obj.getString("device_uid"))
+                        ml.add(device)
+                    }
+                    catch (e :RuntimeException) {
+                        Toast.makeText(context, "Could not get data", Toast.LENGTH_LONG)
+                    }
                 }
 
                 viewAdapter.notifyDataSetChanged()
@@ -174,6 +180,8 @@ class DeviceFragment : Fragment() {
             }
             result.failure { error ->
                 Log.w("ResultError: ", error.toString())
+                progress!!.visibility = View.GONE
+                Snackbar.make(my_recycler_view, "Could not get Data", Snackbar.LENGTH_LONG).setAction("Resend", null).show()
             }
         }
     }

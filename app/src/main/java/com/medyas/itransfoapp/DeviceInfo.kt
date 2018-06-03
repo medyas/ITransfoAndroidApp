@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.httpPost
@@ -26,8 +27,11 @@ import org.json.JSONObject
 import java.util.*
 
 class DeviceInfo : AppCompatActivity() {
-    private var uid: String = ""
+    private var ref: String = ""
+    private var company: String = ""
     private var name:String = ""
+
+
     private var progress:ProgressBar? = null
     private var scroll:ScrollView? = null
     private var taskRunner:Timer = Timer()
@@ -44,15 +48,15 @@ class DeviceInfo : AppCompatActivity() {
         if (savedInstanceState == null) {
             val extras = intent.extras
             if (extras == null) {
-                uid = ""
-                name = ""
             } else {
-                uid = extras.getString("device_uid")
+                ref = extras.getString("device_ref")
+                company = extras.getString("company")
                 name = extras.getString("device_name")
             }
         } else {
             try {
-                uid = savedInstanceState.getSerializable("device_uid").toString()
+                ref = savedInstanceState.getSerializable("device_ref").toString()
+                ref = savedInstanceState.getSerializable("company").toString()
                 name = savedInstanceState.getSerializable("device_name").toString()
             }
             catch(e:RuntimeException) {
@@ -67,7 +71,7 @@ class DeviceInfo : AppCompatActivity() {
 
         val obj = JSONObject()
         try {
-            obj.put("device_uid", uid)
+            obj.put("device_ref", ref)
         } catch (e: Exception) {
             Toast.makeText(this, "Could not send data", Toast.LENGTH_LONG).show()
         }
@@ -80,7 +84,9 @@ class DeviceInfo : AppCompatActivity() {
             }
         }, 0, 5000)
 
-
+        this.r.text = ref
+        this.n.text = name
+        this.c.text = company
 
         scroll!!.visibility = View.GONE
         progress!!.visibility = View.VISIBLE
@@ -94,7 +100,7 @@ class DeviceInfo : AppCompatActivity() {
     inner class someTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "http://ec2-54-200-146-66.us-west-2.compute.amazonaws.com/getlatestdata/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.ml/getlatestdata/".httpPost().body(p).responseString()
             return result
         }
 
@@ -117,6 +123,9 @@ class DeviceInfo : AppCompatActivity() {
                 editText31.text = json.getString("pri_current_p1")
                 editText32.text = json.getString("pri_current_p2")
                 editText33.text = json.getString("pri_current_p3")
+                editText321.text = json.getString("sec_current_p1")
+                editText322.text = json.getString("sec_current_p2")
+                editText323.text = json.getString("sec_current_p3")
                 editText41.text = json.getString("internal_temp")
                 editText42.text = json.getString("external_temp")
                 editText51.text = json.getString("gas")
@@ -149,7 +158,7 @@ class DeviceInfo : AppCompatActivity() {
             }
             R.id.action_settings -> {
                 val intent = Intent(this@DeviceInfo, DeviceSettings::class.java)
-                intent.putExtra("device_uid", uid)
+                intent.putExtra("device_ref", ref)
                 startActivity(intent)
                 return true
             }

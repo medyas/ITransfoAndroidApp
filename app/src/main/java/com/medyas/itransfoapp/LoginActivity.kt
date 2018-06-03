@@ -25,8 +25,7 @@ import android.net.ConnectivityManager
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
-
-
+import java.net.InetAddress
 
 
 /**
@@ -71,7 +70,6 @@ class LoginActivity : AppCompatActivity(){
 
         mLoginFormView = findViewById(R.id.login_form)
         mProgressView = findViewById(R.id.login_progress)
-
         logo_signin = findViewById(R.id.logo_signin )
 
         swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
@@ -87,11 +85,13 @@ class LoginActivity : AppCompatActivity(){
         val currentUser = mAuth!!.currentUser
         if(isOnline()) {
             updateUI(currentUser)
+            cloudoff.visibility = View.GONE
         }
         else {
             mLoginFormView!!.visibility = View.GONE
             logo_signin!!.visibility = View.GONE
-            Snackbar.make(findViewById(R.id.login_form ), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
+            cloudoff.visibility = View.VISIBLE
+            Snackbar.make(findViewById(R.id.login_form ), "No Internet Connection", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
 
@@ -99,11 +99,53 @@ class LoginActivity : AppCompatActivity(){
 
     private fun checkConnection() {
         swipeRefreshLayout!!.isRefreshing = true
-        val handler = Handler()
+        /*val handler = Handler()
         handler.postDelayed(Runnable {
             // Do something after 5s = 5000ms
             swipeRefreshLayout!!.isRefreshing = false
-        }, 5000)
+        }, 5000)*/
+        val currentUser = mAuth!!.currentUser
+
+        if(isOnline()) {
+            updateUI(currentUser)
+            cloudoff.visibility = View.GONE
+            mLoginFormView!!.visibility = View.VISIBLE
+            logo_signin!!.visibility = View.VISIBLE
+            swipeRefreshLayout!!.isRefreshing = false
+        }
+        else {
+            swipeRefreshLayout!!.isRefreshing = false
+            mLoginFormView!!.visibility = View.GONE
+            logo_signin!!.visibility = View.GONE
+            cloudoff.visibility = View.VISIBLE
+            Snackbar.make(findViewById(R.id.login_form ), "No Internet Connection", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
+    }
+
+    private fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        Log.w("check net", (netInfo != null && netInfo.isConnectedOrConnecting).toString())
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        try {
+            val ipAddr = InetAddress.getByName("google.com")
+            val handler = Handler()
+            handler.postDelayed(Runnable {
+                // Do something after 5s = 5000ms
+                Log.w("Site", ipAddr.toString()+" Result: "+!(ipAddr.toString()>""))
+
+            }, 2000)
+            //You can replace it with your name
+            return !(ipAddr.toString()>"")
+
+        } catch (e: Exception) {
+            return false
+        }
+
     }
 
 
@@ -212,13 +254,6 @@ class LoginActivity : AppCompatActivity(){
             //Toast.makeText(this@LoginActivity, "Login failed!", Toast.LENGTH_SHORT).show()
         }
     }
-
-    fun isOnline(): Boolean {
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
-
 
     private fun isEmailValid(email: String): Boolean {
         //TODO: Replace this with your own logic

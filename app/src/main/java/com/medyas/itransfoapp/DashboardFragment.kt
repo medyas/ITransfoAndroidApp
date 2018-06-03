@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,10 +28,7 @@ import android.widget.ArrayAdapter
 import java.util.ArrayList
 import android.widget.AdapterView
 import android.widget.TextView
-
-
-
-
+import java.io.IOError
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -100,7 +98,7 @@ class DashboardFragment : Fragment() {
     inner class someTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "http://ec2-54-200-146-66.us-west-2.compute.amazonaws.com/devicesub/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.ml/devicesub/".httpPost().body(p).responseString()
 
             return result
         }
@@ -112,21 +110,28 @@ class DashboardFragment : Fragment() {
         override fun onPostExecute(result: Result<Any, FuelError>) {
             super.onPostExecute(result)
             result.success { data ->
-                val json = JSONArray(data.toString())
-                button!!.text = "{fa-bolt} ${json.length()}"
+                try {
+                    val json = JSONArray(data.toString())
+                    button!!.text = "{fa-bolt} ${json.length()}"
 
-                for( i in 0 until (json.length())) {
-                    list!!.add(json[i].toString())
+                    for( i in 0 until (json.length())) {
+                        list!!.add(json[i].toString())
+                    }
+
+                    val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner!!.adapter = adapter
                 }
+                catch(e:KotlinNullPointerException) {
 
-                val adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, list)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner!!.adapter = adapter
+                }
 
             }
             result.failure { error ->
                 Log.w("ResultError: ", error.toString())
                 Toast.makeText(context, "Could not Get Data", Toast.LENGTH_LONG)
+                progress.visibility = View.GONE
+                Snackbar.make(spinner, "Could not get Data", Snackbar.LENGTH_LONG).setAction("Resend", null).show()
             }
 
             //progress.visibility = View.GONE
@@ -137,7 +142,7 @@ class DashboardFragment : Fragment() {
     inner class getmsg(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "http://ec2-54-200-146-66.us-west-2.compute.amazonaws.com/getmessages/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.ml/getmessages/".httpPost().body(p).responseString()
 
             return result
         }
@@ -151,12 +156,21 @@ class DashboardFragment : Fragment() {
             super.onPostExecute(result)
             result.success { data ->
                 val json = JSONArray(data.toString())
-                Log.w("MSG: ", json.toString())
+                //Log.w("MSG: ", json.toString())
                 for( i in 0 until (json.length())) {
+                    var data:JSONObject  = json.getJSONObject(i)
                     val msg = TextView(context)
-                    msg.text = json[i].toString()
+                    msg.setTextColor(resources.getColor(R.color.colorWhite))
+                    msg.text = data.getString("msg").toString()
                     msg.layoutParams = ViewGroup.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
-                    layout.addView(msg)
+                    msg.setPadding(15, 15, 15, 15)
+                    msg.textSize =  20.toFloat()
+                    try {
+                        layout!!.addView(msg)
+                    }
+                    catch(e:NullPointerException) {
+
+                    }
                 }
             }
             result.failure { error ->
@@ -165,7 +179,7 @@ class DashboardFragment : Fragment() {
             }
 
             progress!!.visibility = View.GONE
-            layout.visibility = View.VISIBLE
+            layout!!.visibility = View.VISIBLE
         }
     }
 

@@ -77,7 +77,8 @@ class DeviceAdapter : RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
 
         holder.layout!!.setOnClickListener { view ->
             val intent = Intent(view.context, DeviceInfo::class.java)
-            intent.putExtra("device_uid", items[position].device_uid)
+            intent.putExtra("device_ref", items[position].device_ref)
+            intent.putExtra("company", items[position].company_name)
             intent.putExtra("device_name", items[position].device_name)
             view.context.startActivity(intent)
         }

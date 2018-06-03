@@ -7,8 +7,8 @@
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:iconTint="@color/colorAccent"
+        android:icon="@drawable/baseline_settings_white_48"
+        android:iconTint="@color/colorWhite"
         android:title="Settings"
         app:showAsAction="ifRoom|collapseActionView" />
 

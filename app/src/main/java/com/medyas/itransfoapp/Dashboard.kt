@@ -73,7 +73,7 @@ class Dashboard : AppCompatActivity() , DashboardFragment.OnFragmentInteractionL
         }
 
         FuelManager.instance.apply {
-            basePath = "http://ec2-54-200-146-66.us-west-2.compute.amazonaws.com"
+            basePath = "https://itransfo.ml"
             baseHeaders = mapOf("Content-Type" to "application/json")
         }
 

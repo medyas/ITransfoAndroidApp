@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -16,6 +17,8 @@ import com.google.firebase.messaging.RemoteMessage
 
 
 class myMessageService : FirebaseMessagingService() {
+
+    private var ref:String? = ""
 
     /**
      * Called when message is received.
@@ -39,8 +42,9 @@ class myMessageService : FirebaseMessagingService() {
         Log.d(TAG, "From: " + remoteMessage!!.from!!)
 
         // Check if message contains a data payload.
-        if (remoteMessage.data.size > 0) {
+        if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
+            ref = remoteMessage.data["device_ref"]
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
@@ -77,7 +81,10 @@ class myMessageService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(messageTitle: String?, messageBody: String?) {
-        val intent = Intent(this, Dashboard::class.java)
+        val intent = Intent(this, DeviceInfo::class.java)
+        intent.putExtra("device_ref", ref)
+        intent.putExtra("company", "")
+        intent.putExtra("device_name", "")
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT)
@@ -85,8 +92,9 @@ class myMessageService : FirebaseMessagingService() {
         val channelId = getString(R.string.notify)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp) //@android:drawable/ic_dialog_alert
                 .setContentTitle(messageTitle)
+                .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.baseline_warning_black_48dp)) //R.mipmap.ic_launcher
                 .setContentText(messageBody)
                 .setColor(resources.getColor(R.color.colorAccent))
                 .setAutoCancel(true)
