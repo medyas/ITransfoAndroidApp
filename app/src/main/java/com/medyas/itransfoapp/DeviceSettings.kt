@@ -16,6 +16,9 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.failure
 import com.github.kittinunf.result.success
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.iid.FirebaseInstanceId
 
 import kotlinx.android.synthetic.main.activity_device_settings.*
 import kotlinx.android.synthetic.main.content_device_settings.*
@@ -25,6 +28,8 @@ import org.json.JSONObject
 class DeviceSettings : AppCompatActivity() {
 
     private var ref: String = ""
+    private var mAuth: FirebaseAuth? = null
+    private var client: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,9 @@ class DeviceSettings : AppCompatActivity() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true);
             supportActionBar?.setDisplayShowHomeEnabled(true);
         }
+
+        mAuth = FirebaseAuth.getInstance()
+        client = mAuth!!.currentUser
 
         if (savedInstanceState == null) {
             val extras = intent.extras
@@ -72,6 +80,7 @@ class DeviceSettings : AppCompatActivity() {
                 obj.put("sec_current", sec_current.text)
                 obj.put("internal_temp", internal_temp.text)
                 obj.put("external_temp", external_temp.text)
+                obj.put("uid", client!!.uid)
             } catch (e: Exception) {
                 Toast.makeText(this, "Could not send data", Toast.LENGTH_LONG).show()
             }

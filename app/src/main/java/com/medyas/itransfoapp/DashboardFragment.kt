@@ -177,9 +177,13 @@ class DashboardFragment : Fragment() {
                 Log.w("ResultError: ", error.toString())
                 Toast.makeText(context, "Could not Get Data", Toast.LENGTH_LONG)
             }
+            try {
+                progress!!.visibility = View.GONE
+                layout!!.visibility = View.VISIBLE
+            }
+            catch(e:KotlinNullPointerException) {
 
-            progress!!.visibility = View.GONE
-            layout!!.visibility = View.VISIBLE
+            }
         }
     }
 

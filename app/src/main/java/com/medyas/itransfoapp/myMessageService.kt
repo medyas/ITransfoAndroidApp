@@ -92,7 +92,7 @@ class myMessageService : FirebaseMessagingService() {
         val channelId = getString(R.string.notify)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp) //@android:drawable/ic_dialog_alert
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(messageTitle)
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.baseline_warning_black_48dp)) //R.mipmap.ic_launcher
                 .setContentText(messageBody)
