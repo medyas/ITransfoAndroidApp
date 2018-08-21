@@ -23,3 +23,4 @@ Latest selected device data - updated each 5seconds
 ![Latest selected device data - updated each 5seconds](screenshots/6.png)
 Settings interface - alter user data
 ![Settings interface](screenshots/7.jpg)
+
