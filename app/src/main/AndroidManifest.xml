@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.medyas.itransfoapp">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -16,7 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/ThemeItransfoApp">
+        android:theme="@style/ThemeItransfoApp"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

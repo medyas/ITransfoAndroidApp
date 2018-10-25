@@ -73,9 +73,9 @@ class UserFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
-        this.signOut?.setOnClickListener( {
+        this.signOut?.setOnClickListener {
             signOutUser()
-        })
+        }
 
         this.support.setOnClickListener( {
             sendEmail()

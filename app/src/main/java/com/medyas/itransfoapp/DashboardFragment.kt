@@ -98,7 +98,7 @@ class DashboardFragment : Fragment() {
     inner class someTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.ml/devicesub/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.tk/devicesub/".httpPost().body(p).responseString()
 
             return result
         }
@@ -142,7 +142,7 @@ class DashboardFragment : Fragment() {
     inner class getmsg(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.ml/getmessages/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.tk/getmessages/".httpPost().body(p).responseString()
 
             return result
         }

@@ -100,7 +100,7 @@ class DeviceInfo : AppCompatActivity() {
     inner class someTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.ml/getlatestdata/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.tk/getlatestdata/".httpPost().body(p).responseString()
             return result
         }
 

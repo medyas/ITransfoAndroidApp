@@ -92,7 +92,7 @@ class DeviceSettings : AppCompatActivity() {
     inner class getParamTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.ml/getparameters/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.tk/getparameters/".httpPost().body(p).responseString()
             return result
         }
 
@@ -125,7 +125,7 @@ class DeviceSettings : AppCompatActivity() {
     inner class setParamTask(obj: String) : AsyncTask<Void, Void, Result<Any, FuelError>>() {
         private var p = obj
         override fun doInBackground(vararg params: Void?): Result<Any, FuelError> {
-            val (request, response, result) = "https://itransfo.ml/updateprameters/".httpPost().body(p).responseString()
+            val (request, response, result) = "https://itransfo.tk/updateprameters/".httpPost().body(p).responseString()
             return result
         }
 

@@ -29,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
         gd.setStroke(strokeWidth, strokeColor)
 
         val secondsDelayed:Long = 1
-        Handler().postDelayed(Runnable {
+        Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()
         }, secondsDelayed * 1000)
